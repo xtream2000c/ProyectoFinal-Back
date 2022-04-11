@@ -1,5 +1,5 @@
 <?php
-
+header('Content-Type: application/json; charset=utf-8');
 switch ($_SERVER['REQUEST_METHOD']) {
 
   case 'POST':
@@ -9,8 +9,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
   break;
 
-  case 'GET':
-    echo 'Pedir'; 
+  case 'GET': 
+    getAllUsers();
   break;
 
   case 'PUT':
@@ -33,5 +33,17 @@ require __DIR__ . "/dbConnection/mongoDbConnection.php";
   }
 
 }
+
+function getAllUsers(){
+  
+  require __DIR__ . "/dbConnection/mongoDbConnection.php";
+  
+    $resultado = $Users->find()->toArray();
+
+    if ($resultado) {
+      echo json_encode($resultado);
+    }
+  
+  }
 
 ?>
