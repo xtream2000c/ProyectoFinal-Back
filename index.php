@@ -1,5 +1,8 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 switch ($_SERVER['REQUEST_METHOD']) {
 
   case 'POST':
@@ -10,7 +13,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
   break;
 
   case 'GET': 
+
     getAllUsers();
+    
   break;
 
   case 'PUT':
@@ -26,10 +31,10 @@ function insertUser(){
   
 require __DIR__ . "/dbConnection/mongoDbConnection.php";
 
-  $resultado = $Users->insertOne( [ 'name' => $_POST['name'], 'password' => $_POST['password'] ] );
+  $resultado = $Users->insertOne( [ 'name' => $_POST['name'], 'email' => $_POST['email'], 'username' => $_POST['username'], 'password' => $_POST['password'] ] );
 
   if ($resultado) {
-    print 'id: '. $resultado->getInsertedId() . ' insertado correctamente';
+    return;
   }
 
 }
