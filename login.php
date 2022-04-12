@@ -16,8 +16,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
 function insertUser(){
   
     require __DIR__ . "/dbConnection/mongoDbConnection.php";
-    if(!isset($_POST['username']) || !isset($_POST['username'])){
-        http_response_code(404);
+    if(!isset($_POST['username']) || !isset($_POST['password'])){
+        http_response_code(400);
         echo 'No se ha introducido usuario o contraseña';
     }
     else{
@@ -27,6 +27,7 @@ function insertUser(){
             echo json_encode($resultado);
         }
         else{
+            http_response_code(404);
             echo 'Usuario no encontrado';
         }
     }
