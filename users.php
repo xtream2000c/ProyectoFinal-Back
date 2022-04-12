@@ -14,8 +14,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
   case 'GET': 
 
-    getAllUsers();
-    
+    if(isset($_GET['_id'])){
+      getUserById($_GET['_id']);
+    }
+    else{
+      getAllUsers();
+    }
   break;
 
   case 'PUT':
@@ -37,6 +41,16 @@ require __DIR__ . "/dbConnection/mongoDbConnection.php";
     return;
   }
 
+}
+
+function getUserById($id){
+  require __DIR__ . "/dbConnection/mongoDbConnection.php";
+  
+    $resultado = $Users->findOne(['_id' => new MongoDB\BSON\ObjectID($id)]);
+    
+    if ($resultado) {
+      echo json_encode($resultado);
+    }
 }
 
 function getAllUsers(){
