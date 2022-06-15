@@ -14,8 +14,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
   case 'GET': 
 
-    if(isset($_GET['_id'])){
-      getProductById($_GET['_id']);
+    if(isset($_GET['id'])){
+      getProductById($_GET['id']);
     }
     else{
       getAllProducts();
@@ -23,11 +23,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
   break;
 
   case 'PUT':
-    echo 'Editar';   
+    $_POST = json_decode(file_get_contents('php://input'), true);
+    updateProduct($_GET['id']);   
   break;
   
   case 'DELETE':
-    echo 'Eliminar';   
+    deleteProduct($_GET['id']);   
   break;
 }
 
@@ -53,6 +54,16 @@ function getProductById($id){
     }
 }
 
+function updateProduct($id){
+  require __DIR__ . "/dbConnection/mongoDbConnection.php";
+  
+    $resultado = $Products->updateOne([ "_id" => new MongoDB\BSON\ObjectID($id) ] , [ '$set' => [ 'name' => $_POST['name'], 'price' => $_POST['price'], 'description' => $_POST['description'], 'stock' => $_POST['stock'] ]]);
+    
+    if ($resultado) {
+      echo json_encode($resultado);
+    }
+}
+
 function getAllProducts(){
   
   require __DIR__ . "/dbConnection/mongoDbConnection.php";
@@ -63,6 +74,13 @@ function getAllProducts(){
       echo json_encode($resultado);
     }
   
+  }
+  function deleteProduct($id){
+    require __DIR__ . "/dbConnection/mongoDbConnection.php";
+    
+      $Products->deleteOne([ "_id" => new MongoDB\BSON\ObjectID($id) ]);
+      echo json_encode("OK");
+      
   }
 
 ?>

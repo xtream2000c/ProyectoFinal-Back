@@ -35,7 +35,7 @@ function insertUser(){
   
 require __DIR__ . "/dbConnection/mongoDbConnection.php";
 
-  $resultado = $Users->insertOne( [ 'name' => $_POST['name'], 'email' => $_POST['email'], 'username' => $_POST['username'], 'password' => $_POST['password'] ] );
+  $resultado = $Users->insertOne( [ 'name' => $_POST['name'], 'email' => $_POST['email'], 'username' => $_POST['username'], 'password' => $_POST['password'], 'type' => $_POST['type'] ] );
 
   if ($resultado) {
     return;
